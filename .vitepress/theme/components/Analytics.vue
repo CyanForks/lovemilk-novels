@@ -1,22 +1,22 @@
 <template>
     <Toast />
-    <Drawer ref="drawer" v-model:visible="showDialog" position="bottom" style="height: auto;" :dismissable="false"
-        :showCloseIcon="false" :blockScroll="true" @hide="handleClose(false)">
+    <Drawer ref="drawer" v-model:visible="showDialog" position="bottom" height="auto" :dismissable="false"
+        :showCloseIcon="false" :blockScroll="true" @hide="handleClose">
         <template #header>
             <!-- m-auto 居中 -->
-            <div class="p-drawer-title flex m-auto no-select">
+            <div class="p-drawer-title" flex select-none margin="auto">
                 <p>用户行为收集提示</p>
             </div>
         </template>
 
-        <div class="flex justify-center no-select">
+        <div class="justify-center" flex select-none>
             <p>该网站使用 Analytics, 这是为了帮助我们提供更好的用户体验, 给用户带来福祉.<br>我们使用的 Analytics 服务提供商: Google Analytics, Microsoft
                 Clarity.</p>
         </div>
         <template #footer>
-            <div class="flex justify-center gap-4">
-                <Button label="接受并同意 Analytics" severity="success" @click="handleClose(true)" :disabled="disableButtons" />
-                <Button label="关闭网站" severity="danger" outlined @click="handleClose(false)" :disabled="disableButtons" />
+            <div class="justify-center" flex gap="4">
+                <Button label="接受并同意 Analytics" severity="success" @click="allowAnalytics" :disabled="disableButtons" />
+                <Button label="关闭网站" severity="danger" outlined @click="handleClose" :disabled="disableButtons" />
             </div>
         </template>
     </Drawer>
@@ -28,47 +28,31 @@ import Drawer from 'primevue/drawer';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
+import { useAnalyticsStore } from "../../../stores/analytics";
 const toast = useToast();
 
 const drawer = useTemplateRef('drawer');
 const disableButtons = ref(false);
-const showDialog = ref(localStorage.getItem('lovemilk-allow-analytics') !== 'true');
+const store = useAnalyticsStore()
+const showDialog = ref(!store.agreed);
 
-let allowAnalytics;
+
+let allowAnalytics: ()=>void;
 const tillApprove = new Promise((resolve) => {
-    allowAnalytics = resolve;
+    allowAnalytics = ()=>{
+      store.agreed = true
+      resolve(void 0)
+    };
 })
 if (!showDialog.value) {
     allowAnalytics();
 }
 
-let handleClose = async (state: boolean) => {
-    disableButtons.value = true;
-
-    if (!state) {
-        // let useYouTube = false;
-        // try {
-        //     const trace = await (await fetch('https://aka.lovemilk.top/cdn-cgi/trace/')).text()
-        //     if (!trace.includes('loc=CN')) {
-        //         useYouTube = true;
-        //     }
-        // } catch (e) { }
-
-        // window.close();
-        // location.href = useYouTube ? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' : 'https://www.bilibili.com/video/BV1GJ411x7h7/';
-
-        setTimeout(() => { window.close(); location.href = 'about:blank'; }, 1500);
-        toast.add(
-            { severity: 'warn', summary: '关闭提示', detail: '即将跳转至空白页面', life: 1500 }
-        );
-        return;
-    }
-
-    localStorage.setItem('lovemilk-allow-analytics', 'true')
-    handleClose = async (state: boolean) => { }  // 防止 @hide 时重复执行
-    showDialog.value = false;
-
-    allowAnalytics()
+function handleClose() {
+  document.head.style.transition = 'display 2s ease';
+  document.getElementById("app").style.display = 'none';
+  location.assign(new URL("https://ggl.link/redir-youtube"))
+  window.close()
 }
 
 const loadAll = async () => {
@@ -112,13 +96,9 @@ const loadClarity = async () => {
             // @ts-ignore
             y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
             // @ts-ignore
-            t.onload = (e) => {
-                resolve(e);
-            }
+            t.onload = resolve
             // @ts-ignore
-            t.onerror = (e) => {
-                reject(e);
-            }
+            t.onerror = reject
         })(window, document, "clarity", "script", "ode07yeuls");  // @ts-ignore
     });
 }
@@ -130,12 +110,8 @@ const loadGoogleAnalytics = async () => {
         gaScript.async = true;
         const e = document.getElementsByTagName('script')[0];
         e.parentNode?.insertBefore(gaScript, e);
-        gaScript.onload = (e) => {
-            resolve(e);
-        }
-        gaScript.onerror = (e) => {
-            reject(e);
-        }
+        gaScript.onload = resolve
+        gaScript.onerror = reject
 
         // @ts-ignore
         window.dataLayer = window.dataLayer || [];
@@ -150,9 +126,3 @@ const loadGoogleAnalytics = async () => {
 
 Promise.all([loadAll(),]).then();
 </script>
-
-<style scoped>
-.no-select {
-    user-select: none;
-}
-</style>
