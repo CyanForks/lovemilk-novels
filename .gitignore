@@ -2,7 +2,8 @@
 
 /node_modules/
 /.yarn/
-.vitepress/*
+.vitepress/dist
+.vitepress/cache
 !.vitepress/config.mts
 !.vitepress/uno.config.ts
 !.vitepress/theme/

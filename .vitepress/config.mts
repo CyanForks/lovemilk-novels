@@ -24,8 +24,8 @@ export default defineConfig({
     externalLinkIcon: false,
 
     footer: {
-      message: '<p style="user-select: none;">本网站部署于中国大陆外, 由 GitHub Pages 和 Cloudflare Pages 提供托管支持</p>',
-      copyright: '<a target="_blank" style="user-select: none;" href="https://aka.lovemilk.top/68">Copyright &copy; Lovemilk, All Rights Reserved.</a>'
+      message: '<p select-none>本网站部署于中国大陆外, 由 GitHub Pages 和 Cloudflare Pages 提供托管支持</p>',
+      copyright: '<a target="_blank" select-none href="https://aka.lovemilk.top/68">Copyright &copy; Lovemilk, All Rights Reserved.</a>'
     },
 
     docFooter: {

@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: 牛奶の小说
-  text: <p class="nano-7">Novels of lovemilk</p>
-  tagline: 牛奶写的小说将在本网站可供查看 <br><p class="nano-87">Novels which are public and written by lovemilk are available on this website</p>
+  text: <p class="text-xl">Novels of lovemilk</p>
+  tagline: 牛奶写的小说将在本网站可供查看 <br><p class="text-xl">Novels which are public and written by lovemilk are available on this website</p>
   actions:
     - theme: brand
       text: 小说主页
@@ -17,12 +17,4 @@ features:
 ---
 
 <style>
-.nano-7 {
-  font-size: 0.7em;
-  line-height: 1em;
-}
-.nano-87 {
-  font-size: 0.87em;
-  line-height: 1.1em;
-}
 </style>
