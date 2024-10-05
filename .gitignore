@@ -1,0 +1,11 @@
+.idea/
+
+/node_modules/
+/.yarn/
+.vitepress/*
+!.vitepress/config.mts
+!.vitepress/uno.config.ts
+!.vitepress/theme/
+
+# ignore outline files
+/**/.outline.md
