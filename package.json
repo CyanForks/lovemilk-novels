@@ -16,6 +16,7 @@
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@shikijs/transformers": "^1.21.0",
+    "@types/node": "^22.7.4",
     "@unocss/preset-attributify": "^0.63.3",
     "@unocss/preset-wind": "^0.63.3",
     "@vue/language-server": "^2.1.6",
@@ -25,6 +26,5 @@
     "shiki": "^1.21.0",
     "unocss": "^0.63.3",
     "vite": "^5.4.8"
-  },
-  "packageManager": "yarn@4.5.0+sha512.837566d24eec14ec0f5f1411adb544e892b3454255e61fdef8fd05f3429480102806bac7446bc9daff3896b01ae4b62d00096c7e989f1596f2af10b927532f39"
+  }
 }

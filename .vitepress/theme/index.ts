@@ -18,10 +18,10 @@ export default {
   enhanceApp({ app }: { app: App }) {
     let pinia = createPinia()
     pinia.use(piniaPluginPersistedstate)
-    app.use(pinia)
     app.use(PrimeVue, { theme: { preset: Lara }})
     app.use(ToastService)
     app.component('uv', UseVar)
+    app.use(pinia)
   },
   Layout,
 } satisfies Theme;
