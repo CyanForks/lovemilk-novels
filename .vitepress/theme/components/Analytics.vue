@@ -1,7 +1,7 @@
 <template>
   <Toast />
-  <Drawer ref="drawer" v-model:visible="showDialog" style="height: auto" position="bottom" :dismissable="false"
-    :showCloseIcon="false" :blockScroll="true">
+  <Drawer id="analyticsDrawer" v-model:visible="showDialog" style="height: auto" position="bottom" :dismissable="false"
+    :showCloseIcon="false" :blockScroll="true" @show="checkDrawer">
     <template #header>
       <!-- m-auto 居中 -->
       <div class="p-drawer-title" flex select-none m="auto">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from 'vue';
+import { computed, ref } from 'vue';
 import Drawer from 'primevue/drawer';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
@@ -32,9 +32,45 @@ import { useAnalyticsStore } from "../../../stores/analytics";
 
 const toast = useToast();
 
-const drawer = useTemplateRef('drawer');
+let showedDialog = false;
+const checkDrawer = () => {
+  const analyticsDrawer = document.getElementById("analyticsDrawer")
+
+  const onHide = () => {
+    hideApp()
+    toast.add(
+      { severity: 'error', summary: '用户行为收集提示', detail: `用户行为收集提示弹窗意外消失, 即将刷新网站`, life: 1500 }
+    );
+    setTimeout(() => {
+      location.reload()
+    }, 2000)
+  }
+
+  if (!analyticsDrawer) {
+    onHide()
+    return
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    const entry = entries[0];
+
+    if (entry.isIntersecting) {
+      showedDialog = true
+      return
+    }
+
+    if (showDialog.value && showedDialog) {
+      onHide()
+    }
+  }, {
+    threshold: 1.0
+  })
+
+  observer.observe(analyticsDrawer)
+}
+
 const disableButtons = ref(false);
-const store = useAnalyticsStore()
+const store = useAnalyticsStore();
 const showDialog = computed(() => !store.agreed);
 
 function approveAnalytics() {
@@ -53,10 +89,14 @@ const tillApprove = new Promise((resolve) => {
   })
 })
 
-function handleClose() {
+function hideApp() {
   document.head.style.transition = 'display 2s ease';
   // @ts-ignore
   document.getElementById("app").style.display = 'none';
+}
+
+function handleClose() {
+  hideApp()
   // 【官方 MV】Never Gonna Give You Up - Rick Astley
   // B 站视频时间跳转好像有问题, t=0 (或 t=0.0) 不生效, 参见 https://www.bilibili.com/opus/988151539685130245
   location.assign(new URL("https://www.bilibili.com/video/BV1GJ411x7h7/?t=0.1"))
