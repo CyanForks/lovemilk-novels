@@ -58,7 +58,8 @@ function handleClose() {
   // @ts-ignore
   document.getElementById("app").style.display = 'none';
   // 【官方 MV】Never Gonna Give You Up - Rick Astley
-  location.assign(new URL("https://www.bilibili.com/video/BV1GJ411x7h7"))
+  // B 站视频时间跳转好像有问题, t=0 (或 t=0.0) 不生效, 参见 https://www.bilibili.com/opus/988151539685130245
+  location.assign(new URL("https://www.bilibili.com/video/BV1GJ411x7h7/?t=0.1"))
   window.close()
 }
 
