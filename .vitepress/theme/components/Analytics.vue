@@ -57,7 +57,8 @@ function handleClose() {
   document.head.style.transition = 'display 2s ease';
   // @ts-ignore
   document.getElementById("app").style.display = 'none';
-  location.assign(new URL("https://ggl.link/redir-youtube"))
+  // 【官方 MV】Never Gonna Give You Up - Rick Astley
+  location.assign(new URL("https://www.bilibili.com/video/BV1GJ411x7h7"))
   window.close()
 }
 
