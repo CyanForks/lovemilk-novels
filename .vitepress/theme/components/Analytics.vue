@@ -39,7 +39,7 @@ const checkDrawer = () => {
   const onHide = () => {
     hideApp()
     toast.add(
-      { severity: 'error', summary: '用户行为收集提示', detail: `用户行为收集提示弹窗意外消失, 即将刷新网站`, life: 1500 }
+      { severity: 'error', summary: '用户行为收集提示', detail: `用户行为收集提示弹窗意外消失, 即将刷新网站`, life: 2000 }
     );
     setTimeout(() => {
       location.reload()
