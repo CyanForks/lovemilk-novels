@@ -7,6 +7,8 @@ const { Layout } = DefaultTheme
 </script>
 
 <template>
-  <Layout />
   <Analytics />
+  <ClientOnly>
+    <Layout />
+  </ClientOnly>
 </template>

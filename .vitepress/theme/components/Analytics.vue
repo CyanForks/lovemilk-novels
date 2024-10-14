@@ -121,7 +121,8 @@ const loadGoogleAnalytics = async () => {
     gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-KM85VFC4LJ';
     gaScript.async = true;
     const e = document.getElementsByTagName('script')[0];
-    e.parentNode?.insertBefore(gaScript, e);
+    // @ts-ignore
+    e.parentNode.insertBefore(gaScript, e);
     gaScript.onload = resolve
     gaScript.onerror = reject
 

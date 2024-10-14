@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import AutoSidebar from 'vite-plugin-vitepress-auto-sidebar';
+import FootnotePlugin  from "markdown-it-footnote";
 import UnoCSS from 'unocss/vite'
 
 export default defineConfig({
@@ -37,12 +38,17 @@ export default defineConfig({
     returnToTopLabel: '返回顶部',
     sidebarMenuLabel: '菜单',
   },
+  markdown: {
+    config: (md) => {
+      md.use(FootnotePlugin)
+    }
+  },
   vite: {
     plugins: [
       AutoSidebar({
         path: 'novels/',
-        ignoreList: ['.outline.md']
-        // titleFromFile: true,
+        ignoreList: ['.outline.md'],
+        titleFromFile: true,
       }),
       UnoCSS(),
     ],

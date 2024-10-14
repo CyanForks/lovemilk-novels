@@ -9,6 +9,7 @@ import 'virtual:uno.css';
 import PrimeVue from 'primevue/config';
 import Lara from '@primevue/themes/lara';
 import ToastService from 'primevue/toastservice';
+import Button from 'primevue/button';
 
 import UseVar from './components/UseVar.vue';
 import Layout from './components/Layout.vue';
@@ -21,6 +22,7 @@ export default {
     app.use(PrimeVue, { theme: { preset: Lara }})
     app.use(ToastService)
     app.component('uv', UseVar)
+    app.component('PVButton', Button)
     app.use(pinia)
   },
   Layout,
