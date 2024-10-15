@@ -11,7 +11,7 @@
 
     <div text="center" select-none>
       <p>该网站使用 Analytics, 这是为了帮助我们提供更好的用户体验, 给用户带来福祉.</p>
-      <p>我们使用的 Analytics 服务提供商: Google Analytics, Microsoft Clarity.</p>
+      <p>我们使用的 Analytics 服务提供商: Google Analytics, Microsoft Clarity 以及 Cloudflare Web Analytics.</p>
     </div>
     <template #footer>
       <div justify-center flex gap="4">
@@ -63,7 +63,7 @@ const checkDrawer = () => {
       onHide()
     }
   }, {
-    threshold: 1.0
+    threshold: 0.1
   })
 
   intersectionObserver.observe(analyticsDrawer)
@@ -71,14 +71,14 @@ const checkDrawer = () => {
   setTimeout(() => {
     const analyticsDrawerParent = analyticsDrawer.parentElement
     // slice(0) to copy
-    const oldStyles = [analyticsDrawer.style.cssText.slice(0), analyticsDrawerParent?.style.cssText.slice(0)]
+    const oldStyles = [analyticsDrawer?.style?.cssText?.slice(0), analyticsDrawerParent?.style?.cssText?.slice(0)]
 
     const mutationObserver = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
           const oldStyle = oldStyles[mutation.target === analyticsDrawer ? 0 : 1]
           // @ts-ignore
-          const newStyle = mutation.target.style.cssText
+          const newStyle = mutation.target?.style?.cssText
 
           if (oldStyle === newStyle) {
             continue
@@ -86,7 +86,7 @@ const checkDrawer = () => {
 
           // @ts-ignore
           // overwrite style
-          mutation.target.setAttribute('style', oldStyle);
+          mutation.target.setAttribute('style', oldStyle ?? '');
         }
       }
     })
@@ -162,6 +162,16 @@ const loadAll = async () => {
     );
   }
 
+  try {
+    await loadCloudflareWebAnalytics();
+  } catch (e) {
+    errorCount++;
+    console.error(e);
+    toast.add(
+      { severity: 'error', summary: 'Analytics', detail: `加载 Cloudflare Web Analytics 失败`, life: 3000 }
+    );
+  }
+
   if (!errorCount) {
     toast.add(
       { severity: 'success', summary: 'Analytics', detail: '已加载 Analytics 脚本', life: 1500 }
@@ -169,7 +179,7 @@ const loadAll = async () => {
   }
 }
 
-const loadClarity = async () => {
+const loadClarity = () => {
   return new Promise((resolve, reject) => {
     (function (c, l, a, r, i, t, y) {
       // @ts-ignore
@@ -192,7 +202,7 @@ const loadClarity = async () => {
   });
 }
 
-const loadGoogleAnalytics = async () => {
+const loadGoogleAnalytics = () => {
   return new Promise((resolve, reject) => {
     const gaScript = document.createElement('script');
     gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-KM85VFC4LJ';
@@ -213,6 +223,20 @@ const loadGoogleAnalytics = async () => {
     gtag('js', new Date());
     // @ts-ignore
     gtag('config', 'G-KM85VFC4LJ');
+  });
+}
+
+const loadCloudflareWebAnalytics = () => {
+  return new Promise((resolve, reject) => {
+    const waScript = document.createElement('script');
+    waScript.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    waScript.setAttribute('data-cf-beacon', '{"token": "8e4bf037dcb24075b412a20765ffde63"}')
+    waScript.defer = true;
+    const e = document.getElementsByTagName('script')[0];
+    // @ts-ignore
+    e.parentNode.insertBefore(waScript, e);
+    waScript.onload = resolve
+    waScript.onerror = reject
   });
 }
 
