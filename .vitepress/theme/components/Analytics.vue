@@ -51,7 +51,7 @@ const checkDrawer = () => {
     return
   }
 
-  const observer = new IntersectionObserver((entries) => {
+  const intersectionObserver = new IntersectionObserver((entries) => {
     const entry = entries[0];
 
     if (entry.isIntersecting) {
@@ -66,7 +66,42 @@ const checkDrawer = () => {
     threshold: 1.0
   })
 
-  observer.observe(analyticsDrawer)
+  intersectionObserver.observe(analyticsDrawer)
+
+  setTimeout(() => {
+    const analyticsDrawerParent = analyticsDrawer.parentElement
+    // slice(0) to copy
+    const oldStyles = [analyticsDrawer.style.cssText.slice(0), analyticsDrawerParent?.style.cssText.slice(0)]
+
+    const mutationObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          const oldStyle = oldStyles[mutation.target === analyticsDrawer ? 0 : 1]
+          // @ts-ignore
+          const newStyle = mutation.target.style.cssText
+
+          if (oldStyle === newStyle) {
+            continue
+          }
+
+          // @ts-ignore
+          // overwrite style
+          mutation.target.setAttribute('style', oldStyle);
+        }
+      }
+    })
+    mutationObserver.observe(analyticsDrawer, {
+      attributes: true,
+      attributeFilter: ['style']
+    })
+
+    if (analyticsDrawerParent) {
+      mutationObserver.observe(analyticsDrawerParent, {
+        attributes: true,
+        attributeFilter: ['style']
+      })
+    }
+  }, 50)
 }
 
 const disableButtons = ref(false);
