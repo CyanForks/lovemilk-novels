@@ -4,7 +4,7 @@ import FootnotePlugin  from "markdown-it-footnote";
 import UnoCSS from 'unocss/vite'
 
 export default defineConfig({
-  title: "牛奶の小说 / Novels of lovemilk",
+  title: "牛奶の小说 / Novels of lovemilk | 本网站部署于中国大陆外",
   description: "牛奶の小说将在本网站可供查看 / Novels which are public and written by lovemilk are available on this website",
   srcDir: 'novels/',
   lang: 'zh-CN',
@@ -37,6 +37,11 @@ export default defineConfig({
     darkModeSwitchLabel: '颜色模式',
     returnToTopLabel: '返回顶部',
     sidebarMenuLabel: '菜单',
+    lightModeSwitchTitle: '单击以切换至明亮模式',
+    darkModeSwitchTitle: '单击以切换至黑暗模式',
+    outline: {
+      label: '本页概览',
+    }
   },
   markdown: {
     config: (md) => {
@@ -58,4 +63,5 @@ export default defineConfig({
       }
     }
   },
+  ignoreDeadLinks: true
 })

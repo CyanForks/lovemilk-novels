@@ -16,5 +16,6 @@ features:
     details: 由牛奶直接产出予读者, 更新及时, 比快更快.
 ---
 
-<style>
-</style>
+::: warning
+为保证网站渲染正常, 请使用 Google Chrome >= 85 (Microsoft Edge >= 85), Mozilla Firefox >= 77 或最新版 Apple Safari 浏览器访问本网站
+:::
