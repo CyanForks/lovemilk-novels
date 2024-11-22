@@ -14,6 +14,7 @@
       <div text="center" select-none>
         <p>该网站使用 Analytics, 这是为了帮助我们提供更好的用户体验, 给用户带来福祉.</p>
         <p>我们使用的 Analytics 服务提供商: Google Analytics, Microsoft Clarity 以及 Cloudflare Web Analytics.</p>
+        <p>若您点击了 "接受并同意 Analytics", 这也意味着您已仔细阅读并均已接受和同意上述 Analytics 服务提供商的相关隐私政策和用户协议.</p>
       </div>
       <template #footer>
         <div justify-center flex gap="4">
@@ -33,8 +34,12 @@ import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { useAnalyticsStore } from "../../../stores/analytics";
 
-let stopObserver: (() => void) | undefined = void 0;
+// @ts-ignore
+const isDev: boolean = !!import.meta.env.DEV;
 const toast = useToast();
+
+
+let stopObserver: (() => void) | undefined = void 0;
 const checkDrawer = async () => {
   await nextTick()  // 等待组件渲染完成
 
@@ -152,6 +157,14 @@ function handleClose() {
 
 const loadAll = async () => {
   await tillApprove;
+  if (isDev) {
+    setTimeout(() => {
+      toast.add(
+        { severity: 'info', summary: 'Analytics', detail: `停止加载 Analytics 脚本: 位于开发环境`, life: 3000 }
+      );
+    }, 300)
+    return
+  }
 
   let errorCount = 0;
 
