@@ -80,6 +80,13 @@ const checkDrawer = async () => {
     [analyticsDrawerParent, analyticsDrawerParent?.style?.cssText?.slice(0)]
   ]
 
+  const oldClasses: Array<Array<any>> = []
+
+  setTimeout(() => {
+    oldClasses.push([analyticsDrawer, analyticsDrawer?.className?.slice(0)])
+    oldClasses.push([analyticsDrawerParent, analyticsDrawerParent?.className?.slice(0)])
+  }, 800)
+
   const mutationObserver = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
@@ -97,18 +104,37 @@ const checkDrawer = async () => {
         toast.add(
           { severity: 'warn', summary: '用户行为收集提示弹窗', detail: `请勿修改用户行为收集提示弹窗样式, 现已自动重置`, life: 3000, closable: false }
         );
+      } else if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        if (!oldClasses.length) {
+          continue
+        }
+
+        const [_, oldClass] = oldClasses.filter(([element, _]) => element === mutation.target)[0]
+        // @ts-ignore
+        const newClass = mutation.target?.className
+
+        if (oldClass === newClass) {
+          continue
+        }
+
+        // @ts-ignore
+        // overwrite style
+        mutation.target.setAttribute('class', oldClass ?? '');
+        toast.add(
+          { severity: 'warn', summary: '用户行为收集提示弹窗', detail: `请勿修改用户行为收集提示弹窗 class, 现已自动重置`, life: 3000, closable: false }
+        );
       }
     }
   })
   mutationObserver.observe(analyticsDrawer, {
     attributes: true,
-    attributeFilter: ['style']
+    attributeFilter: ['style', 'class']
   })
 
   if (analyticsDrawerParent) {
     mutationObserver.observe(analyticsDrawerParent, {
       attributes: true,
-      attributeFilter: ['style']
+      attributeFilter: ['style', 'class']
     })
   }
 
