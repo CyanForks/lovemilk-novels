@@ -1,18 +1,23 @@
 <template>
-    <div>
+    <div style="max-width: min(75%, 1024px); margin: auto auto;">
         <Card>
             <template #title>数据管理</template>
+            <template #subtitle>管理您在本网站的各项数据</template>
             <template #content>
                 <Panel header="Analytics">
                     <p class="text-xl">是否启用 Analytics</p>
-                    <p class="m-0 danger">
-                        `启用 Analytics` 也意味着您已仔细阅读并均已接受和同意我们使用的 Analytics 服务提供商的相关隐私政策和用户协议
-                    </p>
-                    <ToggleButton v-model="enableAnalytics" onLabel="已启用" offLabel="已禁用" />
+                    <div class="oneline">
+                        <p class="m-0 danger" style="margin-right: 16px;">
+                            `启用 Analytics` 也意味着您已仔细阅读并均已接受和同意我们使用的 Analytics 服务提供商的相关隐私政策和用户协议
+                        </p>
+                        <span class="hide" id="enableAnalytics">在本网站上启用 Analytics</span>
+                        <ToggleSwitch :title="enableAnalytics ? 'Analytics 已启用' : 'Analytics 已禁用'"
+                            aria-labelledby="enableAnalytics" class="to-right oneline-item" v-model="enableAnalytics" />
+                    </div>
                 </Panel>
             </template>
             <template #footer>
-                <Button label="保存配置" @click="saveAll" />
+                <Button class="to-right" label="保存配置" @click="saveAll" />
             </template>
         </Card>
     </div>
@@ -22,7 +27,7 @@
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import Button from 'primevue/button';
-import ToggleButton from 'primevue/togglebutton';
+import ToggleSwitch from 'primevue/toggleswitch';
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast();
@@ -39,6 +44,13 @@ store.$subscribe((_, state) => {  // 在数据更新时更新 enableAnalytics
 })
 
 const saveAll = () => {
+    if (store.agreed === enableAnalytics.value) {
+
+        toast.add(
+            { severity: 'info', summary: '数据管理', detail: `配置未更改`, life: 3000 }
+        );
+        return
+    }
     store.agreed = enableAnalytics.value
 
     toast.add(
@@ -50,5 +62,23 @@ const saveAll = () => {
 <style scoped>
 .danger {
     color: #ff4d4f
+}
+
+.to-right {
+    margin-left: auto;
+    float: right;
+}
+
+.oneline {
+    display: flex;
+    align-items: center;
+}
+
+.oneline-item {
+    flex-shrink: 0;
+}
+
+.hide {
+    display: none;
 }
 </style>

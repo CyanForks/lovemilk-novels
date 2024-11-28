@@ -1,6 +1,6 @@
 ---
 title: 数据管理
-layout: doc
+layout: page
 ---
 
 <DataManage />
