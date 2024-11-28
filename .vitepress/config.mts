@@ -11,6 +11,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: '主页', link: '/' },
+      { text: '数据管理', link: '/_/DataManage' },
     ],
 
     editLink: {
@@ -52,7 +53,8 @@ export default defineConfig({
     plugins: [
       AutoSidebar({
         path: 'novels/',
-        ignoreList: ['.outline.md'],
+        ignoreList: ['.outline.md', '_'],
+        ignoreIndexItem: true,
         titleFromFile: true,
       }),
       UnoCSS(),

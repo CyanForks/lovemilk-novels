@@ -15,6 +15,7 @@
         <p>该网站使用 Analytics, 这是为了帮助我们提供更好的用户体验, 给用户带来福祉.</p>
         <p>我们使用的 Analytics 服务提供商: Google Analytics, Microsoft Clarity 以及 Cloudflare Web Analytics.</p>
         <p>若您点击了 "接受并同意 Analytics", 这也意味着您已仔细阅读并均已接受和同意上述 Analytics 服务提供商的相关隐私政策和用户协议.</p>
+        <p>您可以前往「数据管理」页面 (入口位于右上角) 或 「<a href="/_/DataManage">单击此处</a>」管理您的数据</p>
       </div>
       <template #footer>
         <div justify-center flex gap="4">
