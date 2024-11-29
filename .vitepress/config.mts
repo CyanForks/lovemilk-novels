@@ -50,6 +50,10 @@ export default defineConfig({
     }
   },
   vite: {
+    server: {
+      host: "localhost",
+      port: 8080
+    },
     plugins: [
       AutoSidebar({
         path: 'novels/',
