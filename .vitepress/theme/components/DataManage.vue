@@ -1,5 +1,5 @@
 <template>
-    <div w-75vw m-auto m-t-8px>
+    <div w-75vw m-auto m-t-8px class="mw-1024px">
         <Card>
             <template #title>数据管理</template>
             <template #subtitle>管理您在本网站的各项数据</template>
@@ -80,5 +80,9 @@ const saveAll = () => {
 
 .hide {
     display: none;
+}
+
+.mw-1024px {
+    max-width: 1024px;
 }
 </style>
