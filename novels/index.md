@@ -6,7 +6,7 @@ hero:
   name: 牛奶の小说
   text: <p class="text-xl">Novels of lovemilk</p>
   image:
-    src: "/logo/logo.jpg"
+    src: "https://github.com/lovemilk2333.png"
     alt: logo
   tagline: 牛奶写的小说将在本网站可供查看 <br><p class="text-xl">Novels which are public and written by lovemilk are available on this website</p>
   actions:
