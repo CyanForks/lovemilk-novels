@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "jsx": "preserve",
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "baseUrl": ".",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "paths": {
+            "~/*": [
+                "src/*"
+            ]
+        },
+        "resolveJsonModule": true,
+        "types": [
+            "vite/client",
+            "vitepress"
+        ],
+        "strict": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "ignoreDeprecations": "5.0"
+    },
+    "exclude": [
+        ".vitepress/dist",
+        "node_modules"
+    ]
+}
