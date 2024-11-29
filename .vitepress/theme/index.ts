@@ -1,6 +1,6 @@
+import type { EnhanceAppContext } from 'vitepress'
 import DefaultTheme from 'vitepress/theme';
 import type { Theme } from "vitepress";
-import { App } from 'vue';
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
@@ -17,15 +17,22 @@ import Cover from './components/Cover.vue';
 import PartHead from './components/PartHead.vue';
 import CornerBrackets from './components/CornerBrackets.vue';
 
-export default {
+export default <Theme> {
   ...DefaultTheme,
-  // @ts-ignore
-  enhanceApp({ app }: {app: App}) {
-    let pinia = createPinia()
+  enhanceApp({ app }: EnhanceAppContext) {
+    let pinia: any = createPinia()
     pinia.use(piniaPluginPersistedstate)
-    app.use(PrimeVue, { theme: { preset: Lara } })
-    app.use(ToastService)
+    app.use(PrimeVue as any, {
+      theme: {
+        preset: Lara,
+        options: {
+          darkModeSelector: ".dark"
+        }
+      }
+    })
+    app.use(ToastService as any)
     app.component('v-markdown', Vue3MarkdownIt)
+    // @ts-expect-error hack :)
     app.component('cover', Cover)
     app.component('part-head', PartHead)
     app.component('uv', UseVar)
@@ -33,5 +40,4 @@ export default {
     app.use(pinia)
   },
   Layout,
-  // @ts-ignore
 } satisfies Theme;

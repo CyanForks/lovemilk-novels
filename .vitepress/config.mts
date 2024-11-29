@@ -54,13 +54,13 @@ export default defineConfig({
       host: "localhost",
       port: 8080
     },
-    plugins: [  // @ts-ignore
+    plugins: [
       AutoSidebar({
         path: 'novels/',
         ignoreList: ['.outline.md', '_'],
         ignoreIndexItem: true,
         titleFromFile: true,
-      }),  // @ts-ignore
+      }),
       UnoCSS(),
     ],
     build: {
