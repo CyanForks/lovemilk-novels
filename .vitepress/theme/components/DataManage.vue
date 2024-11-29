@@ -1,13 +1,13 @@
 <template>
-    <div style="max-width: min(75%, 1024px); margin: auto auto;">
+    <div w-75vw m-auto m-t-8px>
         <Card>
             <template #title>数据管理</template>
             <template #subtitle>管理您在本网站的各项数据</template>
             <template #content>
                 <Panel header="Analytics">
-                    <p class="text-xl">是否启用 Analytics</p>
+                    <p text-xl>是否启用 Analytics</p>
                     <div class="oneline">
-                        <p class="m-0 danger" style="margin-right: 16px;">
+                        <p class="danger" m="0 r-16px">
                             `启用 Analytics` 也意味着您已仔细阅读并均已接受和同意我们使用的 Analytics 服务提供商的相关隐私政策和用户协议
                         </p>
                         <span class="hide" id="enableAnalytics">在本网站上启用 Analytics</span>
