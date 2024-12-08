@@ -2720,6 +2720,11 @@ importx@^0.5.0:
     pathe "^1.1.2"
     tsx "^4.19.1"
 
+install@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.npmmirror.com/install/-/install-0.13.0.tgz#6af6e9da9dd0987de2ab420f78e60d9c17260776"
+  integrity sha512-zDml/jzr2PKU9I8J/xyZBQn8rPCAY//UOYNmR01XwNwyfhEWObo2SWfSl1+0tm1u6PhxLwDnfsT/6jB7OUxqFA==
+
 is-binary-path@~2.1.0:
   version "2.1.0"
   resolved "https://registry.npmmirror.com/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"
@@ -3358,6 +3363,11 @@ preact@^10.0.0:
   resolved "https://registry.npmmirror.com/preact/-/preact-10.24.2.tgz#42179771d3b06e7adb884e3f8127ddd3d99b78f6"
   integrity sha512-1cSoF0aCC8uaARATfrlz4VCBqE8LwZwRfLgkxJOQwAlQt6ayTmi0D9OF7nXid1POI5SZidFuG9CnlXbDfLqY/Q==
 
+primeicons@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.npmmirror.com/primeicons/-/primeicons-7.0.0.tgz#6b25c3fdcb29bb745a3035bdc1ed5902f4a419cf"
+  integrity sha512-jK3Et9UzwzTsd6tzl2RmwrVY/b8raJ3QZLzoDACj+oTJ0oX7L9Hy+XnVwgo4QVKlKpnP/Ur13SXV/pVh4LzaDw==
+
 primevue@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/primevue/-/primevue-4.2.4.tgz#7ac7957734e2f4f7f92ceb91e03207ad13efd2ac"
@@ -3983,7 +3993,7 @@ vite-plugin-vitepress-auto-sidebar@^1.7.0:
     front-matter "^4.0.2"
     picocolors "^1.0.0"
 
-vite@^5.4.10, vite@^5.4.11:
+vite@5.4.11, vite@^5.4.10:
   version "5.4.11"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.4.11.tgz#3b415cd4aed781a356c1de5a9ebafb837715f6e5"
   integrity sha512-c7jFQRklXua0mTzneGW9QVyxFjUgwcihC4bXEtujIo2ouWCe1Ajt/amn2PCxYnhYfd5k09JX3SB7OYWFKYqj8Q==

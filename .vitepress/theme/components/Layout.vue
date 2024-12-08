@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import DefaultTheme from 'vitepress/theme'
-import { useData } from 'vitepress'
+import { useData, useRoute } from 'vitepress'
 import { nextTick, provide } from 'vue'
+import Toast from 'primevue/toast';
 import Analytics from './Analytics.vue';
 
 const { Layout } = DefaultTheme
 
-const { isDark } = useData()
+const { isDark, page } = useData()
+const isNotFound = computed(() => page.value.isNotFound === undefined ? false : page.value.isNotFound)
+const route = useRoute()
+const isHome = computed(() => route.path === '/')
+const isInternal = computed(() => route.path.startsWith('/_'))
 
 function enableTransitions() {
   return 'startViewTransition' in document
@@ -44,7 +50,8 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 </script>
 
 <template>
-  <Analytics />
+  <Toast />
+  <Analytics v-if="!isNotFound && !isHome && !isInternal" />
   <ClientOnly>
     <Layout />
   </ClientOnly>

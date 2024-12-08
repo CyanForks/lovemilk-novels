@@ -1,7 +1,6 @@
 <template>
   <!-- <div class="analytics"> -->
   <div>
-    <Toast />
     <Drawer id="analyticsDrawer" v-model:visible="showDialog" style="height: auto" position="bottom"
       :dismissable="false" :showCloseIcon="false" :blockScroll="true" @show="onShow" @hide="stopObserver">
       <template #header>
@@ -14,13 +13,19 @@
       <div text="center" select-none>
         <p>该网站使用 Analytics, 这是为了帮助我们提供更好的用户体验, 给用户带来福祉.</p>
         <p>我们使用的 Analytics 服务提供商: Google Analytics, Microsoft Clarity 以及 Cloudflare Web Analytics.</p>
-        <p>若您点击了 "接受并同意 Analytics", 这也意味着您已仔细阅读并均已接受和同意上述 Analytics 服务提供商的相关隐私政策和用户协议.</p>
-        <p>您可以前往「数据管理」页面 (入口位于右上角) 或 「<a href="/_/DataManage">单击此处</a>」管理您的数据</p>
+        <p c-red m-t-1.7>若您点击了 "接受并同意 Analytics", 这也意味着您已仔细阅读并均已接受和同意上述 Analytics 服务提供商的相关隐私政策和用户协议.</p>
+        <div m-t-4 justify-center flex gap-2>
+          <Button label="数据管理" title="转到数据管理页面" icon="pi pi-database" severity="secondary"
+            @click="router.go('/_/DataManage')" />
+          <Button label="返回主页" title="转到主页" icon="pi pi-home" severity="secondary" @click="router.go('/')" />
+        </div>
       </div>
       <template #footer>
-        <div justify-center flex gap="4">
-          <Button label="接受并同意 Analytics" severity="success" @click="approveAnalytics" :disabled="disableButtons" />
-          <Button label="关闭网站" severity="danger" outlined @click="handleClose" :disabled="disableButtons" />
+        <div justify-center flex gap-6>
+          <Button label="接受并同意 Analytics" title="请确认您已仔细阅读并均已接受和同意上述 Analytics 服务提供商的相关隐私政策和用户协议并同意 Analytics"
+            severity="success" icon="pi pi-check" @click="approveAnalytics" :disabled="disableButtons" />
+          <Button label="关闭网站 (白屏警告)" title="关闭当前网站 (可能出现大面积白色页面)" severity="danger" outlined icon="pi pi-times" @click="handleClose"
+            :disabled="disableButtons" />
         </div>
       </template>
     </Drawer>
@@ -29,22 +34,23 @@
 
 <script setup lang="ts">
 import { computed, ref, nextTick } from 'vue';
+import { useRouter } from 'vitepress';
 import Drawer from 'primevue/drawer';
 import Button from 'primevue/button';
-import Toast from 'primevue/toast';
 import { useToast } from 'primevue/usetoast';
 import { useAnalyticsStore } from "../../../stores/analytics";
 
 // @ts-ignore
 const isDev: boolean = !!import.meta.env.DEV;
 const toast = useToast();
+const router = useRouter()
 
-
-let stopObserver: (() => void) | undefined = void 0;
+let stopObserver: (() => void) | undefined;
 const checkDrawer = async () => {
   await nextTick()  // 等待组件渲染完成
 
   const analyticsDrawer = document.getElementById("analyticsDrawer")
+  analyticsDrawer ? analyticsDrawer.removeAttribute('id') : void 0
 
   const onHide = () => {
     hideApp()
@@ -146,6 +152,8 @@ const checkDrawer = async () => {
 
 const onShow = async () => {
   stopObserver = await checkDrawer()
+  // 切换路由后立即停止监听
+  stopObserver ? router.onAfterRouteChanged = stopObserver : void 0
 }
 
 const disableButtons = ref(false);
@@ -161,7 +169,7 @@ const tillApprove = new Promise((resolve) => {
     resolve(void 0)
   }
 
-  store.$subscribe((mutation, { agreed }) => {
+  store.$subscribe((_, { agreed }) => {
     if (agreed) {
       resolve(void 0)
     }
@@ -178,7 +186,9 @@ function handleClose() {
   hideApp()
   // 【官方 MV】Never Gonna Give You Up - Rick Astley
   // B 站视频时间跳转好像有问题, t=0 (或 t=0.0) 不生效, 参见 https://www.bilibili.com/opus/988151539685130245
-  location.assign("https://www.bilibili.com/video/BV1GJ411x7h7/?t=0.1")
+  // location.assign("https://www.bilibili.com/video/BV1GJ411x7h7/?t=0.1")
+
+  location.assign('about:blank')
   window.close()
 }
 

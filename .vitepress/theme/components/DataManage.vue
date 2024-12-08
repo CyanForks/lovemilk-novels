@@ -7,8 +7,8 @@
                 <Panel header="Analytics">
                     <p text-xl>是否启用 Analytics</p>
                     <div class="oneline">
-                        <p class="danger" m="0 r-16px">
-                            `启用 Analytics` 也意味着您已仔细阅读并均已接受和同意我们使用的 Analytics 服务提供商的相关隐私政策和用户协议
+                        <p c-red m="0 r-16px">
+                            "启用 Analytics" 也意味着您已仔细阅读并均已接受和同意我们使用的 Analytics 服务提供商的相关隐私政策和用户协议
                         </p>
                         <span class="hide" id="enableAnalytics">在本网站上启用 Analytics</span>
                         <ToggleSwitch :title="enableAnalytics ? 'Analytics 已启用' : 'Analytics 已禁用'"
@@ -60,10 +60,6 @@ const saveAll = () => {
 </script>
 
 <style scoped>
-.danger {
-    color: #ff4d4f
-}
-
 .to-right {
     margin-left: auto;
     float: right;

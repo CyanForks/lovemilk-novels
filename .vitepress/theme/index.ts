@@ -10,6 +10,7 @@ import PrimeVue from 'primevue/config';
 import Lara from '@primevue/themes/lara';
 import ToastService from 'primevue/toastservice';
 import Vue3MarkdownIt from 'vue3-markdown-it';
+import 'primeicons/primeicons.css';
 
 import UseVar from './components/UseVar.vue';
 import Layout from './components/Layout.vue';

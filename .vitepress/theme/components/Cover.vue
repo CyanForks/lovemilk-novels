@@ -19,6 +19,7 @@ const props = defineProps({
     startRoute: {type: String, required: true},  // 必须使用绝对路由路径
     startSeverity: {type: String, default: 'success'},
     startStyle: {type: String, default: 'width: 100%; margin: auto; margin-top: 16px;'},
+    desc: {type: String, default: ''},
 })
 
 // 尾随2空格换行, 切勿删除
@@ -26,6 +27,8 @@ const markdownText = `
 # ${props.title}
 > ${props.statement}  
 > ${props.copyright}  
+  
+${props.desc}
 `
 
 function handleClick() {
