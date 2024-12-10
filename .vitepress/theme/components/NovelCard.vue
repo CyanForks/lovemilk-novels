@@ -1,5 +1,5 @@
 <template>
-    <Card class="novel-card" :class="novelCardTheme" :m="unocssMargin" @click="handleClick" select-none>
+    <Card class="novel-card" :class="novelCardTheme" m="b-4 t-4" @click="handleClick" select-none>
         <template #title>《{{ props.title }}》</template>
         <template #content>
             <div m-t-2>
@@ -21,14 +21,8 @@ const router = useRouter()
 const props = defineProps({
     title: { type: String, required: true },
     desc: { type: String, default: '' },
-    startRoute: { type: String, required: true },  // 必须使用绝对路由路径
-    top: { type: Boolean, default: false },
-    bottom: { type: Boolean, default: false },
+    startRoute: { type: String, required: true }  // 必须使用绝对路由路径
 })
-let unocssMargin = ''
-unocssMargin += props.top ? 't-8 ' : 't-4 '
-unocssMargin += props.bottom ? 'b-8 ' : 'b-4 '
-unocssMargin = unocssMargin.trim()
 
 function handleClick() {
     router.go(props.startRoute)
