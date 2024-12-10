@@ -15,6 +15,7 @@ import 'primeicons/primeicons.css';
 import UseVar from './components/UseVar.vue';
 import Layout from './components/Layout.vue';
 import Cover from './components/Cover.vue';
+import NovelCard from './components/NovelCard.vue';
 import PartHead from './components/PartHead.vue';
 import CornerBrackets from './components/CornerBrackets.vue';
 
@@ -35,6 +36,7 @@ export default <Theme> {
     app.component('v-markdown', Vue3MarkdownIt)
     // @ts-expect-error hack :)
     app.component('cover', Cover)
+    app.component('novel-card', NovelCard)
     app.component('part-head', PartHead)
     app.component('uv', UseVar)
     app.component('cb', CornerBrackets)

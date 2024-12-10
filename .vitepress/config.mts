@@ -4,7 +4,7 @@ import FootnotePlugin  from "markdown-it-footnote";
 import UnoCSS from 'unocss/vite'
 
 export default defineConfig({
-  title: "牛奶の小说 / Novels of lovemilk | 本网站部署于中国大陆外",
+  title: "牛奶の小说 | 本网站部署于中国大陆外",
   description: "牛奶の小说将在本网站可供查看 / Novels which are public and written by lovemilk are available on this website",
   srcDir: 'novels/',
   lang: 'zh-CN',

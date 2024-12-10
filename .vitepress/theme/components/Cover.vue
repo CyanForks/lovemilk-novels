@@ -24,7 +24,7 @@ const props = defineProps({
 
 // 尾随2空格换行, 切勿删除
 const markdownText = `
-# ${props.title}
+# 《${props.title}》
 > ${props.statement}  
 > ${props.copyright}  
   
