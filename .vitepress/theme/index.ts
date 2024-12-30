@@ -9,6 +9,7 @@ import 'virtual:uno.css';
 import PrimeVue from 'primevue/config';
 import Lara from '@primevue/themes/lara';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 import Vue3MarkdownIt from 'vue3-markdown-it';
 import 'primeicons/primeicons.css';
 
@@ -33,6 +34,7 @@ export default <Theme> {
       }
     })
     app.use(ToastService as any)
+    app.use(ConfirmationService as any);
     app.component('v-markdown', Vue3MarkdownIt)
     // @ts-expect-error hack :)
     app.component('cover', Cover)

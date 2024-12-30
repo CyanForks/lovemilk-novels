@@ -234,11 +234,11 @@ const loadAll = async () => {
     );
   }
 
-  if (!errorCount) {
-    toast.add(
-      { severity: 'success', summary: 'Analytics', detail: '已加载 Analytics 脚本', life: 1500 }
-    );
-  }
+  // if (!errorCount) {
+  //   toast.add(
+  //     { severity: 'success', summary: 'Analytics', detail: '已加载 Analytics 脚本', life: 1500 }
+  //   );
+  // }
 }
 
 const loadClarity = () => {
