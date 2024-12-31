@@ -2,7 +2,7 @@
   <!-- <div class="analytics"> -->
   <div>
     <Drawer id="analyticsDrawer" v-model:visible="showDialog" style="height: auto" position="bottom"
-      :dismissable="false" :showCloseIcon="false" :blockScroll="true" @show="onShow" @hide="stopObserver">
+      :dismissable="false" :showCloseIcon="false" :closable="false" :blockScroll="true" @show="onShow" @hide="stopObserver">
       <template #header>
         <!-- m-auto 居中 -->
         <div class="p-drawer-title" flex select-none m="auto">

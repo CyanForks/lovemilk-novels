@@ -1,12 +1,11 @@
 <script setup lang="ts">
 // @ts-ignore
-// const isDev: boolean = !!import.meta.env.DEV;
+const isDev: boolean = !!import.meta.env.DEV;
 let loc
 (async () => {
   const domains = [
     'cf.novels.lovemilk.top',
     'cf.notes.lovemilk.top',
-    'aka.lovemilk.top',
   ]
 
   const closeAll = () => {
@@ -46,14 +45,16 @@ let loc
   loc = data
 })
 
-import { computed, ref } from 'vue';
+import { computed, VNode, h } from 'vue';
 import DefaultTheme from 'vitepress/theme'
-import { useData, useRoute } from 'vitepress'
+import { useData, useRoute, useRouter } from 'vitepress'
 import { nextTick, provide } from 'vue'
 import Toast from 'primevue/toast';
 import Analytics from './Analytics.vue';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { useConfirm } from "primevue/useconfirm";
+
+import { useRegionCheckStore } from '../../../stores/regionCheck'
 
 const { Layout } = DefaultTheme
 
@@ -62,23 +63,41 @@ const confirm = useConfirm();
 const { isDark, page } = useData()
 const isNotFound = computed(() => page.value.isNotFound === undefined ? false : page.value.isNotFound)
 const route = useRoute()
+const router = useRouter()
 const isHome = computed(() => route.path === '/')
 const isInternal = computed(() => route.path.startsWith('/_'))
 
-const CNDialog = () => {
-  if (!loc || typeof loc !== 'string') {
-    setTimeout(CNDialog, 100)
+// 给 `ConfirmationOptions` 加一个 `content` 字段
+declare module 'primevue/confirmationoptions' {
+  interface ConfirmationOptions {
+    content?: VNode
+  }
+}
+
+const store = useRegionCheckStore()
+
+const checkRegion = () => {
+  if (!!store.ignoreUnsupportedRegion) {
     return
   }
 
-  // if (loc !== 'CN') {
-  //   return
-  // }
+  if (!loc || typeof loc !== 'string') {
+    setTimeout(checkRegion, 100)
+    return
+  }
+
+  if (!isDev && loc !== 'CN') {
+    return
+  }
 
   confirm.require({
     defaultFocus: 'accept',
     header: '不受支持的地区',
-    message: '尊敬的用户, 我们注意到您正在从中国大陆访问本网站 该网站尚未取得备案, 不为中国大陆用户提供服务',
+    content: h('p', [
+      '尊敬的用户, 我们注意到您正在从中国大陆访问本网站', h('br'),
+      '这可能会违反您所在国家与地区的法律法规, 须由您承担一切后果', h('br'),
+      '如有需要, 您可以访问 `', h('a', { href: '/_/DataManage', class: 'underline' }, '数据管理页面'), ' > 区域检查` 以设置本弹窗永不弹出'
+    ], ),
     icon: 'pi pi-exclamation-triangle',
     acceptProps: {
       icon: 'pi pi-check',
@@ -88,7 +107,7 @@ const CNDialog = () => {
     rejectProps: {
       icon: 'pi pi-times',
       label: '关闭弹窗',
-      title: '这可能会违反您所在国家与地区的法律法规, 须由您承担一切后果',
+      title: '这可能带来法律风险',
       severity: 'danger',
       outlined: true,
     },
@@ -97,6 +116,9 @@ const CNDialog = () => {
     accept() {
       location.assign('about:blank')
       window.close()
+    },
+    reject() {
+      // store.ignoreUnsupportedRegion = true
     }
   })
 }
@@ -135,12 +157,18 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
   )
 })
 
-CNDialog()
+checkRegion()
 </script>
 
 <template>
   <Toast />
-  <ConfirmDialog />
+  <ConfirmDialog :draggable="false" :closable="false">
+    <template #message="slotProps">
+      <span v-if="!!slotProps.message.icon" :class="slotProps.message.icon" class="!text-6xl text-primary-500" />
+      <p v-if="!!slotProps.message.message">{{ slotProps.message.message }}</p>
+      <component v-if="!!slotProps.message.content" :is="slotProps.message.content" />
+      </template>
+  </ConfirmDialog>
   <Analytics v-if="!isNotFound && !isHome && !isInternal" />
   <ClientOnly>
     <Layout />

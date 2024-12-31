@@ -15,6 +15,22 @@
                             aria-labelledby="enableAnalytics" class="to-right oneline-item" v-model="enableAnalytics" />
                     </div>
                 </Panel>
+                <Panel header="区域检查" mt-6>
+                    <p text-xl>开启后将禁用区域检查, 允许您在不受支持的区域访问本网站而不会收到弹窗警告</p>
+                    <div class="oneline">
+                        <p c-red m="0 r-16px">
+                            这可能会违反您所在国家与地区的法律法规, 须由您承担一切后果
+                            
+                        </p>
+                        <p c-coolGray m="0 r-16px">
+                            该选项在刷新页面后生效
+                        </p>
+                        <span class="hide" id="ignoreRegionCheck">在本网站上启用 Analytics</span>
+                        <ToggleSwitch :title="ignoreRegionCheck ? '区域检查已禁用' : '区域检查已启用'"
+                            aria-labelledby="ignoreRegionCheck" class="to-right oneline-item" v-model="ignoreRegionCheck" />
+                    </div>
+                </Panel>
+                <div mb-3 />
             </template>
             <template #footer>
                 <Button class="to-right" label="保存配置" @click="saveAll" />
@@ -34,24 +50,33 @@ const toast = useToast();
 
 import { ref, computed } from 'vue';
 import { useAnalyticsStore } from '../../../stores/analytics';
+import { useRegionCheckStore } from '../../../stores/regionCheck';
 
-const store = useAnalyticsStore()
-const agreeAnalytics = computed(() => !!store.agreed);
-const enableAnalytics = ref(agreeAnalytics.value)
+const analyticsStore = useAnalyticsStore()
+const regionCheckStore = useRegionCheckStore()
+const enableAnalyticsComputed = computed(() => !!analyticsStore.agreed);
+const enableAnalytics = ref(enableAnalyticsComputed.value)
+const ignoreRegionCheckComputed = computed(() => !!regionCheckStore.ignoreUnsupportedRegion)
+const ignoreRegionCheck = ref(ignoreRegionCheckComputed.value)
 
-store.$subscribe((_, state) => {  // 在数据更新时更新 enableAnalytics
+analyticsStore.$subscribe((_, state) => {  // 在数据更新时更新 enableAnalytics
     enableAnalytics.value = state.agreed
 })
 
+regionCheckStore.$subscribe((_, state) => {
+    ignoreRegionCheck.value = state.ignoreUnsupportedRegion
+})
+
 const saveAll = () => {
-    if (store.agreed === enableAnalytics.value) {
+    if (analyticsStore.agreed === enableAnalytics.value && regionCheckStore.ignoreUnsupportedRegion === ignoreRegionCheck.value) {
 
         toast.add(
             { severity: 'info', summary: '数据管理', detail: `配置未更改`, life: 3000 }
         );
         return
     }
-    store.agreed = enableAnalytics.value
+    analyticsStore.agreed = enableAnalytics.value
+    regionCheckStore.ignoreUnsupportedRegion = ignoreRegionCheck.value
 
     toast.add(
         { severity: 'success', summary: '数据管理', detail: `配置保存成功`, life: 3000 }
@@ -62,6 +87,7 @@ const saveAll = () => {
 <style scoped>
 .to-right {
     margin-left: auto;
+    margin-right: 0;
     float: right;
 }
 
